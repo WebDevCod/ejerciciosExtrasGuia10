@@ -11,7 +11,7 @@ public class CiudadServicio {
     HashMap<String, Ciudad> ciudades = new HashMap();
 
     public void crearCiudad() {
-        System.out.println("-------------------------");
+
         System.out.println("--Ingresar ciudad--");
         String response;
         do {
@@ -29,15 +29,15 @@ public class CiudadServicio {
 
         } while (response.equalsIgnoreCase("S"));
         mostrarCiudadesIngresadas();
-        System.out.println("-------------------------");
+
     }
 
     public void mostrarCiudadesIngresadas() {
         System.out.println("-------------------------");
         System.out.println("--Ciudades ingresadas--");
-        for (Map.Entry<String, Ciudad> entry : ciudades.entrySet()) {
-            String key = entry.getKey();
-            Ciudad value = entry.getValue();
+        for (Map.Entry<String, Ciudad> ciudad : ciudades.entrySet()) {
+            String key = ciudad.getKey();
+            Ciudad value = ciudad.getValue();
             System.out.println("Ciudad: " + value.getNombre() + " - " + "Cód. Postal: " + key);
         }
         System.out.println("-------------------------");
@@ -47,18 +47,15 @@ public class CiudadServicio {
         System.out.println("-------------------------");
         System.out.println("--Buscar ciudad--");
         System.out.print("Ingresar código postal para buscar ciudad: ");
-        String codPostalAbuscar = scan.nextLine();
 
-        for (Map.Entry<String, Ciudad> entry : ciudades.entrySet()) {
-            String key = entry.getKey();
-            Ciudad value = entry.getValue();
-            if (codPostalAbuscar.equalsIgnoreCase(key)) {
-                System.out.println("Ciudad: " + value.getNombre() + " - " + "Cód. Postal: " + key);
-                System.out.println("-------------------------");
-                return;
-            }
+        String keyCodPostal = scan.nextLine();
+        if (ciudades.containsKey(keyCodPostal)) {
+            String valueCiudad = ciudades.get(keyCodPostal).getNombre();
+            System.out.println("Ciudad: " + valueCiudad + " - " + "Cód. Postal: " + keyCodPostal);
+        } else {
+            System.out.println("No se encuentra ciudad con el código ingresado.");
         }
-        System.out.println("No se encuentra ciudad con el código ingresado.");
+
         System.out.println("-------------------------");
     }
 
@@ -67,20 +64,26 @@ public class CiudadServicio {
         System.out.println("-------------------------");
         System.out.println("--Eliminar ciudad--");
         System.out.print("Nombre de ciudad para eliminar: ");
-        String ciudadAbuscar = scan.nextLine();
 
-        for (Map.Entry<String, Ciudad> entry : ciudades.entrySet()) {
-            String key = entry.getKey();
-            Ciudad value = entry.getValue();
-            if (ciudadAbuscar.equalsIgnoreCase(value.getNombre())) {
-                ciudades.remove(key);
-                System.out.println("Ciudad eliminada con éxito.");
-                System.out.println("-------------------------");
-                return;
+        String nombreCiudad = scan.nextLine();
+        String codigoPostal = null;
+
+        for (Map.Entry<String, Ciudad> ciudad : ciudades.entrySet()) {
+            if (ciudad.getValue().getNombre().equalsIgnoreCase(nombreCiudad)) {
+                codigoPostal = ciudad.getKey();
+                break;
             }
         }
-        System.out.println("No se pudo eliminar la ciudad.");
+
+        if (codigoPostal != null) {
+            ciudades.remove(codigoPostal);
+            System.out.println("Ciudad eliminada con éxito.");
+        } else {
+            System.out.println("No se pudo eliminar la ciudad");
+        }
+
         System.out.println("-------------------------");
+
     }
 
 }
